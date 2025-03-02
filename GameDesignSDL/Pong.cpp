@@ -6,12 +6,12 @@
 // See LICENSE in root directory for full details.
 // ----------------------------------------------------------------
 
-#include "Game.h"
+#include "Pong.h"
 
 const int thickness = 15;
 const float paddleH = 100.0f;
 
-Game::Game()
+Pong::Pong()
 	:mWindow(nullptr)
 	,mRenderer(nullptr)
 	,mTicksCount(0)
@@ -21,7 +21,7 @@ Game::Game()
 
 }
 
-bool Game::Initialize()
+bool Pong::Initialize()
 {
 	// Initialize SDL
 	int sdlResult = SDL_Init(SDL_INIT_VIDEO);
@@ -69,7 +69,7 @@ bool Game::Initialize()
 	return true;
 }
 
-void Game::RunLoop()
+void Pong::RunLoop()
 {
 	while (mIsRunning)
 	{
@@ -79,7 +79,7 @@ void Game::RunLoop()
 	}
 }
 
-void Game::ProcessInput()
+void Pong::ProcessInput()
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
@@ -113,7 +113,7 @@ void Game::ProcessInput()
 	}
 }
 
-void Game::UpdateGame()
+void Pong::UpdateGame()
 {
 	// Wait until 16ms has elapsed since last frame
 	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
@@ -189,7 +189,7 @@ void Game::UpdateGame()
 	}
 }
 
-void Game::GenerateOutput()
+void Pong::GenerateOutput()
 {
 	// Set draw color to blue
 	SDL_SetRenderDrawColor(
@@ -252,7 +252,7 @@ void Game::GenerateOutput()
 	SDL_RenderPresent(mRenderer);
 }
 
-void Game::Shutdown()
+void Pong::Shutdown()
 {
 	SDL_DestroyWindow(mWindow);
 	SDL_Quit();

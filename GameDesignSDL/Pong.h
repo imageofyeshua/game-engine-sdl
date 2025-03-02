@@ -10,10 +10,10 @@ struct Vector2
 };
 
 // Game class
-class Game
+class Pong
 {
 public:
-	Game();
+	Pong();
 	// Initialize the game
 	bool Initialize();
 	// Runs the game loop until the game is over
