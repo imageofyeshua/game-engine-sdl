@@ -1,17 +1,17 @@
-#include "Pong.h"
+#include "Text.h"
 
 int main(int argc, char** argv)
 {
-	Pong pong;
+	Text text;
 
-	bool success = pong.Initialize();
+	bool success = text.Initialize();
 
 	if (success)
 	{
-		pong.RunLoop();
+		text.RunLoop();
 	}
 
-	pong.Shutdown();
+	text.Shutdown();
 	
 	return 0;
 }
