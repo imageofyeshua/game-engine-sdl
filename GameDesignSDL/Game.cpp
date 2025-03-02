@@ -13,7 +13,10 @@ const float paddleH = 100.0f;
 
 Game::Game()
 	:mWindow(nullptr)
-	, mIsRunning(true)
+	,mRenderer(nullptr)
+	,mTicksCount(0)
+	,mIsRunning(true)
+	,mPaddleDir(0)
 {
 
 }
@@ -140,6 +143,49 @@ void Game::UpdateGame()
 		{
 			mPaddlePos.y = 768.0f - paddleH / 2.0f - thickness;
 		}
+	}
+
+	// Update ball position based on ball velocity
+	mBallPos.x += mBallVel.x * deltaTime;
+	mBallPos.y += mBallVel.y * deltaTime;
+
+	// Bounce if needed
+	// Did we intersect with the paddle?
+	float diff = mPaddlePos.y - mBallPos.y;
+
+	// Take absolute value of difference
+	diff = (diff > 0.0f) ? diff : -diff;
+	if (
+		// Our y-difference is small enough
+		diff <= paddleH / 2.0f &&
+		// We are in the correct x-position
+		mBallPos.x <= 25.0f && mBallPos.x >= 20.0f &&
+		// The ball is moving to the left
+		mBallVel.x < 0.0f)
+	{
+		mBallVel.x *= -1.0f;
+	}
+	// Did the ball go off the screen? (if so, end game)
+	else if (mBallPos.x <= 0.0f)
+	{
+		mIsRunning = false;
+	}
+	// Did the ball collide with the right wall?
+	else if (mBallPos.x >= (1024.0f - thickness) && mBallVel.x > 0.0f)
+	{
+		mBallVel.x *= -1.0f;
+	}
+
+	// Did the ball collide with the top wall?
+	if (mBallPos.y <= thickness && mBallVel.y < 0.0f)
+	{
+		mBallVel.y *= -1;
+	}
+	// Did the ball collide with the bottom wall?
+	else if (mBallPos.y >= (768 - thickness) &&
+		mBallVel.y > 0.0f)
+	{
+		mBallVel.y *= -1;
 	}
 }
 
