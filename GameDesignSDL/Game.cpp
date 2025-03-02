@@ -41,6 +41,18 @@ bool Game::Initialize()
 		return false;
 	}
 
+	mRenderer = SDL_CreateRenderer(
+		mWindow,
+		-1,
+		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+	);
+
+	if (!mRenderer)
+	{
+		SDL_Log("Failed to create renderer: %s", SDL_GetError());
+		return false;
+	}
+
 	return true;
 }
 
@@ -76,16 +88,6 @@ void Game::ProcessInput()
 		mIsRunning = false;
 	}
 
-	// Update paddle direction based on W/S keys
-	mPaddleDir = 0;
-	if (state[SDL_SCANCODE_W])
-	{
-		mPaddleDir -= 1;
-	}
-	if (state[SDL_SCANCODE_S])
-	{
-		mPaddleDir += 1;
-	}
 }
 
 void Game::UpdateGame()
@@ -94,6 +96,20 @@ void Game::UpdateGame()
 
 void Game::GenerateOutput()
 {
+	// Set draw color to blue
+	SDL_SetRenderDrawColor(
+		mRenderer,
+		0,		// R
+		0,		// G 
+		255,	// B
+		255		// A
+	);
+
+	// Clear back buffer
+	SDL_RenderClear(mRenderer);
+
+	// Swap front buffer and back buffer
+	SDL_RenderPresent(mRenderer);
 }
 
 void Game::Shutdown()
